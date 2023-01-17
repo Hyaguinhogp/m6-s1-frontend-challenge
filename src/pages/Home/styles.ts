@@ -12,7 +12,7 @@ export const HomeContainer = styled.div`
 export const HomeContent = styled.div`
     display: flex;
     width: 40vw;
-    height: 50vh;
+    height: 55vh;
     background-color: #fff;
     border: 1px solid #e2e5e5;
     border-radius: 5px;
@@ -60,6 +60,17 @@ export const FormContainer = styled.form`
         font-size: 12px;
         font-weight: 600;
         color: #999
+    }
+
+    .error {
+        color: #911;
+    }
+
+    .checkboxes_container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        label { margin: 0; }
     }
 `;
 

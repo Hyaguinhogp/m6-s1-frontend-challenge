@@ -1,10 +1,16 @@
 import { useState } from "react"
 import { FormContainer, HomeContainer, HomeContent, ResponseContainer } from "./styles"
 
-import * as yup from 'yup'
-import { FieldValues, useForm } from "react-hook-form"
 import { yupResolver } from '@hookform/resolvers/yup'
+import { FieldValues, useForm } from "react-hook-form"
+import * as yup from 'yup'
 import api from "../../services/api"
+
+interface IRequest {
+    amount: number
+    installments: number
+    mdr: number
+}
 
 const Home = () => {
     const [day1, setDay1] = useState("0")
@@ -13,12 +19,12 @@ const Home = () => {
     const [day90, setDay90] = useState("0")
 
     const formSchema = yup.object().shape({
-        amount: yup.number().required("Valor obrigatório").min(1000),
-        installments: yup.number().required("Parcelas obrigatórias"),
-        mdr: yup.number().required("MDR obrigatório"),
+        amount: yup.number().typeError("Digite um valor válido").required("Valor obrigatório").min(1000),
+        installments: yup.number().typeError("Digite um valor válido").required("Parcelas obrigatórias").min(1).max(12),
+        mdr: yup.number().typeError("Digite um valor válido").required("MDR obrigatório").min(1).max(100),
     })
 
-    const { register, handleSubmit, formState: { errors } } = useForm({
+    const { register, handleSubmit, formState: { errors } } = useForm<IRequest>({
         resolver: yupResolver(formSchema)
     })
 
@@ -44,7 +50,7 @@ const Home = () => {
                             type="number"
                             {...register("amount")}
                         />
-
+                        <span className="error">{errors.amount?.message}</span>
                     </div>
 
                     <div className="input_container">
@@ -53,6 +59,7 @@ const Home = () => {
                             type="number"
                             {...register("installments")}
                         />
+                        <span className="error">{errors.installments?.message}</span>
                         <span>Máximo de 12 parcelas</span>
                     </div>
 
@@ -62,6 +69,7 @@ const Home = () => {
                             type="number"
                             {...register("mdr")}
                         />
+                        <span className="error">{errors.mdr?.message}</span>
                     </div>
                     <input type="submit" hidden />
                 </FormContainer>
