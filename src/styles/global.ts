@@ -3,9 +3,15 @@ import styled, { createGlobalStyle } from "styled-components";
 export const Global = createGlobalStyle`
 
     :root {
-        --principal-bc-00: #222;
-        --principal-bc-01: #444;
-        --principal-bc-02: #666;
+        --bc-00: #f3f3f5;
+        --bc-01: #ffffff;
+        --bc-02: #f6f6f6;
+        --bc-03: #aaaaaa;
+
+        --fc-00: #555555;
+        --fc-01: #e2e2e2;
+        --fc-02: #66aaff;
+        --fc-03: #991111;
     }
 
     html, body, div, span, applet, object, iframe,

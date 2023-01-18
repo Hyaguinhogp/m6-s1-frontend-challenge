@@ -17,7 +17,7 @@ export const InputPlusButton = styled.div`
     button {
         border: 0;
         border-radius: 0 5px 5px 0;
-        background-color: #6af;
+        background-color: var(--fc-02);
         color: white;
     }
 `
@@ -33,7 +33,7 @@ export const DaysContainer = styled.div`
         margin-bottom: 10px;
         margin-right: 5px;
         border: 0;
-        background-color: #aaa;
+        background-color: var(--bc-03);
         color: white;
     }
 `;

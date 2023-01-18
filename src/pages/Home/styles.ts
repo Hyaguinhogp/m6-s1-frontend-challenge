@@ -6,15 +6,15 @@ export const HomeContainer = styled.div`
     align-items: center;
     width: 100vw;
     height: 100vh;
-    background-color: #f3f3f5;
+    background-color: var(--bc-00);
 `;
 
 export const HomeContent = styled.div`
     display: flex;
     width: 40vw;
     height: 70vh;
-    background-color: #fff;
-    border: 1px solid #e2e5e5;
+    background-color: var(--bc-01);
+    border: 1px solid var(--fc-01);
     border-radius: 5px;
     font-family: 'Inter', sans-serif;
 `;
@@ -27,7 +27,7 @@ export const FormContainer = styled.form`
     height: 100%;
     padding: 60px 50px;
     font-weight: 500;
-    color: #555;
+    color: var(--fc-00);
     
     h2 {
         font-size: 30px;
@@ -45,14 +45,14 @@ export const FormContainer = styled.form`
 
     input {
         height: 40px;
-        border: 1px solid #e2e2e2;
+        border: 1px solid var(--fc-01);
         border-radius: 5px;
         padding: 10px;
     }
 
     input:focus {
         outline: 0;
-        border: 2px solid #6af;
+        border: 2px solid var(--fc-02);
     }
 
     span {
@@ -63,7 +63,7 @@ export const FormContainer = styled.form`
     }
 
     .error {
-        color: #911;
+        color: var(--fc-03);
     }
 
     .checkboxes_container {
@@ -77,7 +77,7 @@ export const FormContainer = styled.form`
         padding: 12px 0;
         border: 0;
         border-radius: 5px;
-        background-color: #6af;
+        background-color: var(--fc-02);
         color: white;
     }
 `;
@@ -86,12 +86,12 @@ export const ResponseContainer = styled.div`
     display: flex;
     justify-content: space-between;
     flex-direction: column;
-    background-color: #f6f6f6;
+    background-color: var(--bc-02);
     width: 40%;
     height: 100%;
     padding: 100px 40px;
     font-style: italic;
-    color: #6af;
+    color: var(--fc-02);
 
     h2 {
         padding: 4px 0px;
