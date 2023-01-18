@@ -12,7 +12,7 @@ export const HomeContainer = styled.div`
 export const HomeContent = styled.div`
     display: flex;
     width: 40vw;
-    height: 55vh;
+    height: 70vh;
     background-color: #fff;
     border: 1px solid #e2e5e5;
     border-radius: 5px;
@@ -71,6 +71,14 @@ export const FormContainer = styled.form`
         justify-content: space-between;
         align-items: center;
         label { margin: 0; }
+    }
+
+    .submit_button {
+        padding: 12px 0;
+        border: 0;
+        border-radius: 5px;
+        background-color: #6af;
+        color: white;
     }
 `;
 

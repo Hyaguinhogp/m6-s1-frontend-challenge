@@ -1,10 +1,12 @@
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { FormContainer, HomeContainer, HomeContent, ResponseContainer } from "./styles"
 
 import { yupResolver } from '@hookform/resolvers/yup'
 import { FieldValues, useForm } from "react-hook-form"
 import * as yup from 'yup'
 import api from "../../services/api"
+import DaysSelect from "../../components/DaysSelect"
+import { daysContext } from "../../contexts/DaysContext"
 
 interface IRequest {
     amount: number
@@ -13,10 +15,8 @@ interface IRequest {
 }
 
 const Home = () => {
-    const [day1, setDay1] = useState("0")
-    const [day15, setDay15] = useState("0")
-    const [day30, setDay30] = useState("0")
-    const [day90, setDay90] = useState("0")
+    const { days } = useContext(daysContext)
+    const [outputDays, setOutputDays] = useState(Object)
 
     const formSchema = yup.object().shape({
         amount: yup.number().typeError("Digite um valor válido").required("Valor obrigatório").min(1000),
@@ -29,12 +29,15 @@ const Home = () => {
     })
 
     const onSubmitFunction = (data: FieldValues) => {
-        api.post("", data)
+
+        let requestData = { ...data }
+        if (days.length !== 0) {
+            requestData = { ...requestData, days: days }
+        }
+
+        api.post("", requestData)
             .then((res) => {
-                setDay1(res.data[1])
-                setDay15(res.data[15])
-                setDay30(res.data[30])
-                setDay90(res.data[90])
+                setOutputDays(res.data)
             })
     }
 
@@ -71,14 +74,19 @@ const Home = () => {
                         />
                         <span className="error">{errors.mdr?.message}</span>
                     </div>
-                    <input type="submit" hidden />
+
+                    <DaysSelect />
+                    <button type="submit" className="submit_button">Simular antecipação</button>
                 </FormContainer>
                 <ResponseContainer>
                     <h2>VOCÊ RECEBERÁ:</h2>
-                    <h3>Amanhã: <span>R$ {day1},00</span></h3>
-                    <h3>Em 15 dias: <span>R$ {day15},00</span></h3>
-                    <h3>Em 30 dias: <span>R$ {day30},00</span></h3>
-                    <h3>Em 90 dias: <span>R$ {day90},00</span></h3>
+
+                    {
+                        Object.keys(outputDays).map((key) => {
+                            return <h3 key={key}>Em {key} dias: <span>R$ {outputDays[key]},00</span></h3>
+                        })
+                    }
+
                 </ResponseContainer>
             </HomeContent>
         </HomeContainer>
