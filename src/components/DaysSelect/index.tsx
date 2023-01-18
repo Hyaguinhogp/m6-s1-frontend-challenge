@@ -14,7 +14,7 @@ const DaysSelect = () => {
                 <input
                     name="days"
                     type="number"
-                    min={1}
+                    min={0}
                     value={day}
                     onChange={(input) => {
                         input.preventDefault()
