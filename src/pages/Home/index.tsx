@@ -7,6 +7,8 @@ import * as yup from 'yup'
 import api from "../../services/api"
 import DaysSelect from "../../components/DaysSelect"
 import { daysContext } from "../../contexts/DaysContext"
+import LoadingScreen from "../../components/LoadingScreen"
+import { toast } from "react-hot-toast"
 
 interface IRequest {
     amount: number
@@ -17,6 +19,7 @@ interface IRequest {
 const Home = () => {
     const { days } = useContext(daysContext)
     const [outputDays, setOutputDays] = useState(Object)
+    const [isLoading, setIsLoading] = useState(false)
 
     const formSchema = yup.object().shape({
         amount: yup.number().typeError("Digite um valor válido").required("Valor obrigatório").min(1000),
@@ -35,61 +38,71 @@ const Home = () => {
             requestData = { ...requestData, days: days }
         }
 
+        setIsLoading(true)
         api.post("", requestData)
             .then((res) => {
+                setIsLoading(false)
                 setOutputDays(res.data)
+            })
+            .catch((error) => {
+                setIsLoading(false)
+                const message = error.response ? error.response.data.message : "Oops! Algo deu errado"
+                toast.error(message)
             })
     }
 
     return (
-        <HomeContainer>
-            <HomeContent>
-                <FormContainer onSubmit={handleSubmit(onSubmitFunction)}>
-                    <h2>Simule sua Antecipação</h2>
+        <>
+            {isLoading && <LoadingScreen />}
+            <HomeContainer>
+                <HomeContent>
+                    <FormContainer onSubmit={handleSubmit(onSubmitFunction)}>
+                        <h2>Simule sua Antecipação</h2>
 
-                    <div className="input_container">
-                        <label htmlFor="amount">Informe o valor da venda *</label>
-                        <input
-                            type="number"
-                            {...register("amount")}
-                        />
-                        <span className="error">{errors.amount?.message}</span>
-                    </div>
+                        <div className="input_container">
+                            <label htmlFor="amount">Informe o valor da venda *</label>
+                            <input
+                                type="number"
+                                {...register("amount")}
+                            />
+                            <span className="error">{errors.amount?.message}</span>
+                        </div>
 
-                    <div className="input_container">
-                        <label htmlFor="installments">Em quantas parcelas *</label>
-                        <input
-                            type="number"
-                            {...register("installments")}
-                        />
-                        <span className="error">{errors.installments?.message}</span>
-                        <span>Máximo de 12 parcelas</span>
-                    </div>
+                        <div className="input_container">
+                            <label htmlFor="installments">Em quantas parcelas *</label>
+                            <input
+                                type="number"
+                                {...register("installments")}
+                            />
+                            <span className="error">{errors.installments?.message}</span>
+                            <span>Máximo de 12 parcelas</span>
+                        </div>
 
-                    <div className="input_container">
-                        <label htmlFor="mdr">Informe o percentual de MDR *</label>
-                        <input
-                            type="number"
-                            {...register("mdr")}
-                        />
-                        <span className="error">{errors.mdr?.message}</span>
-                    </div>
+                        <div className="input_container">
+                            <label htmlFor="mdr">Informe o percentual de MDR *</label>
+                            <input
+                                type="number"
+                                {...register("mdr")}
+                            />
+                            <span className="error">{errors.mdr?.message}</span>
+                        </div>
 
-                    <DaysSelect />
-                    <button type="submit" className="submit_button">Simular antecipação</button>
-                </FormContainer>
-                <ResponseContainer>
-                    <h2>VOCÊ RECEBERÁ:</h2>
+                        <DaysSelect />
+                        <button type="submit" className="submit_button">Simular antecipação</button>
+                    </FormContainer>
+                    <ResponseContainer>
+                        <h2>VOCÊ RECEBERÁ:</h2>
 
-                    {
-                        Object.keys(outputDays).map((key) => {
-                            return <h3 key={key}>Em {key} dias: <span>R$ {outputDays[key]},00</span></h3>
-                        })
-                    }
+                        {
+                            Object.keys(outputDays).map((key) => {
+                                return <h3 key={key}>Em {key} dias: <span>R$ {outputDays[key]},00</span></h3>
+                            })
+                        }
 
-                </ResponseContainer>
-            </HomeContent>
-        </HomeContainer>
+                    </ResponseContainer>
+                </HomeContent>
+            </HomeContainer>
+        </>
     )
 }
 
